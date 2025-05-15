@@ -1,0 +1,60 @@
+#include <stdio.h>
+
+#define MAX 10
+#define INF 9999
+
+int tsp_g[MAX][MAX] = {
+    {0, 10, 15, 20},
+    {5, 0, 9, 10},
+    {6, 13, 0, 12},
+    {8, 8, 9, 0}
+};
+
+int visited[MAX];
+int n = 4;
+int min_cost = INF;
+int best_path[MAX]; // Stores the best path found
+int temp_path[MAX]; // Temporary path for backtracking
+
+/* Function to find the shortest Hamiltonian cycle */
+void tsp(int start, int current, int cost, int count) {
+    temp_path[count - 1] = current + 1; // Store the visited node in path
+
+    if (count == n && tsp_g[current][start] != 0) {  // Base case: all cities visited
+        cost += tsp_g[current][start];
+
+        if (cost < min_cost) {
+            min_cost = cost;
+            for (int i = 0; i < n; i++) {
+                best_path[i] = temp_path[i]; // Store best path
+            }
+            best_path[n] = start + 1; // Add the return to start node
+        }
+        return;
+    }
+
+    for (int i = 0; i < n; i++) {
+        if (!visited[i] && tsp_g[current][i] != 0) {
+            visited[i] = 1;
+            tsp(start, i, cost + tsp_g[current][i], count + 1);
+            visited[i] = 0;  // Backtrack
+        }
+    }
+}
+
+int main() {
+    for (int i = 0; i < n; i++)
+        visited[i] = 0;
+
+    visited[0] = 1; // Start from city 0
+    tsp(0, 0, 0, 1);
+
+    printf("Minimum cost for TSP: %d\n", min_cost);
+    printf("Path taken: ");
+    for (int i = 0; i <= n; i++) {
+        printf("%d ", best_path[i]);
+    }
+    printf("\n");
+
+    return 0;
+}
