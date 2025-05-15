@@ -1,0 +1,72 @@
+#include <limits.h>
+#include <stdbool.h>
+#include <stdio.h>
+
+// Number of nodes in the graph
+#define NUM_NODES 5
+
+int findMinKey(int keys[], bool includedInMST[]) {              // Utility function to find the node with the minimum key value from nodes not yet included in the MST
+    int minValue = INT_MAX;
+    int minIndex = -1;
+
+    for (int node = 0; node < NUM_NODES; node++) {
+        if (!includedInMST[node] && keys[node] < minValue) {
+            minValue = keys[node];
+            minIndex = node;
+        }
+    }
+
+    return minIndex;
+}
+
+void displayMST(int parent[], int graph[NUM_NODES][NUM_NODES]) {      // Utility function to display the edges of the MST and their weights
+    printf("Edge \tWeight\n");
+    for (int node = 1; node < NUM_NODES; node++) {
+        printf("%d -- %d \t%d\n", parent[node], node, graph[parent[node]][node]);
+    }
+}
+
+void primMST(int graph[NUM_NODES][NUM_NODES]) {
+    int parent[NUM_NODES];     
+    int keys[NUM_NODES];       
+    bool includedInMST[NUM_NODES]; // MST inclusion flag for nodes
+
+    // Initialize all keys as infinite and MST set as false
+    for (int i = 0; i < NUM_NODES; i++) {
+        keys[i] = INT_MAX;
+        includedInMST[i] = false;
+    }
+
+    // Start from first node
+    keys[0] = 0;
+    parent[0] = -1;  // First node is root of MST
+
+    for (int count = 0; count < NUM_NODES - 1; count++) {
+        int u = findMinKey(keys, includedInMST);
+        includedInMST[u] = true;
+
+        for (int v = 0; v < NUM_NODES; v++) {
+            if (graph[u][v] != 0 && !includedInMST[v] && graph[u][v] < keys[v]) {
+                parent[v] = u;
+                keys[v] = graph[u][v];
+            }
+        }
+    }
+
+    displayMST(parent, graph);
+}
+
+int main() {
+    int graph[NUM_NODES][NUM_NODES] = {
+        { 0, 10, 0, 0, 5 },
+        { 10, 0, 1, 0, 2 },
+        { 0, 1, 0, 4, 0 },
+        { 0, 0, 4, 0, 3 },
+        { 5, 2, 0, 3, 0 }
+    };
+
+    printf("Minimum Spanning Tree using Prim's Algorithm :\n");
+    primMST(graph);
+
+    return 0;
+}
