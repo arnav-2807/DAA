@@ -1,0 +1,70 @@
+#include <stdio.h>
+
+// Heapify a subtree rooted at index `index`
+void heapify(int data[], int size, int index) {
+    int largest = index;
+    int left = 2 * index + 1;
+    int right = 2 * index + 2;
+
+    // Compare left child
+    if (left < size && data[left] > data[largest]) {
+        largest = left;
+    }
+
+    // Compare right child
+    if (right < size && data[right] > data[largest]) {
+        largest = right;
+    }
+
+    // Swap and continue heapifying if root is not largest
+    if (largest != index) {
+        int temp = data[index];
+        data[index] = data[largest];
+        data[largest] = temp;
+
+        heapify(data, size, largest);
+    }
+}
+
+// Heap Sort function
+void heapSort(int data[], int size) {
+    // Build max heap
+    for (int i = size / 2 - 1; i >= 0; i--) {
+        heapify(data, size, i);
+    }
+
+    // Extract elements from heap
+    for (int i = size - 1; i > 0; i--) {
+        // Swap current root with end
+        int temp = data[0];
+        data[0] = data[i];
+        data[i] = temp;
+
+        // Heapify reduced heap
+        heapify(data, i, 0);
+    }
+}
+
+// Utility function to print array
+void printArray(int arr[], int size) {
+    for (int i = 0; i < size; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+}
+
+// Driver code
+int main() {
+    int nums[] = {15, 3, 17, 8, 10, 1, 6};
+    int len = sizeof(nums) / sizeof(nums[0]);
+
+    printf("Original array:\n");
+    printArray(nums, len);
+
+    heapSort(nums, len);
+
+    printf("Sorted array:\n");
+    printArray(nums, len);
+
+    return 0;
+}
