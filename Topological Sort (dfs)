@@ -1,0 +1,84 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Structure to represent an adjacency list node
+typedef struct Node {
+    int vertex;
+    struct Node* next;
+} Node;
+
+// Function to create a new adjacency list node
+Node* createNode(int vertex) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    newNode->vertex = vertex;
+    newNode->next = NULL;
+    return newNode;
+}
+
+// Function to add an edge to the adjacency list
+void addEdge(Node* adjList[], int u, int v) {
+    Node* newNode = createNode(v);
+    newNode->next = adjList[u];
+    adjList[u] = newNode;
+}
+
+// DFS utility for Topological Sort
+void topologicalSortUtil(int v, Node* adjList[], int visited[], int stack[], int* top) {
+    visited[v] = 1;
+
+    Node* temp = adjList[v];
+    while (temp != NULL) {
+        if (!visited[temp->vertex]) {
+            topologicalSortUtil(temp->vertex, adjList, visited, stack, top);
+        }
+        temp = temp->next;
+    }
+
+    stack[(*top)++] = v;
+}
+
+// Main function to perform Topological Sort
+void topologicalSort(int V, int edges[][2], int E) {
+    Node* adjList[V];
+    for (int i = 0; i < V; i++) {
+        adjList[i] = NULL;
+    }
+
+    // Build the adjacency list
+    for (int i = 0; i < E; i++) {
+        addEdge(adjList, edges[i][0], edges[i][1]);
+    }
+
+    int visited[V];
+    int stack[V];
+    int top = 0;
+
+    for (int i = 0; i < V; i++) {
+        visited[i] = 0;
+    }
+
+    for (int i = 0; i < V; i++) {
+        if (!visited[i]) {
+            topologicalSortUtil(i, adjList, visited, stack, &top);
+        }
+    }
+
+    // Print stack in reverse for topological order
+    for (int i = top - 1; i >= 0; i--) {
+        printf("%d ", stack[i]);
+    }
+    printf("\n");
+}
+
+// Driver code
+int main() {
+    int V = 6;
+    int edges[][2] = {
+        {2, 3}, {3, 1}, {4, 0}, {4, 1}, {5, 0}, {5, 2}
+    };
+    int E = sizeof(edges) / sizeof(edges[0]);
+
+    topologicalSort(V, edges, E);
+
+    return 0;
+}
