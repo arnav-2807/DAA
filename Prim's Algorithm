@@ -70,3 +70,11 @@ int main() {
 
     return 0;
 }
+
+// Output
+/* Minimum Spanning Tree using Prim's Algorithm :
+Edge 	Weight
+4 -- 1 	2
+1 -- 2 	1
+4 -- 3 	3
+0 -- 4 	5 */
