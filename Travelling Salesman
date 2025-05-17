@@ -58,3 +58,6 @@ int main() {
 
     return 0;
 }
+// Output
+/* Minimum cost for TSP: 35
+Path taken: 1 2 4 3 1 */
