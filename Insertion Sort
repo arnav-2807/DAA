@@ -36,3 +36,7 @@ int main()
 
     return 0;
 }
+
+// Output 
+/* Original array : 53 11 79 2 38 66 
+Sorted array : 2 11 38 53 66 79 */
