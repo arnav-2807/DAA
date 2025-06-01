@@ -1,0 +1,21 @@
+#include <stdio.h>
+
+int factorial(int n) {
+    int result = 1;
+    for (int i = 2; i <= n; i++)
+        result *= i;
+    return result;
+}
+int main() {
+    int n = 6, k = 4;
+
+    int fact_n = factorial(n);
+    int fact_k = factorial(k);
+    int fact_nk = factorial(n - k);
+
+    int binomial = fact_n / (fact_k * fact_nk);
+
+    printf("C(%d, %d) = %d\n", n, k, binomial);
+
+    return 0;
+}
