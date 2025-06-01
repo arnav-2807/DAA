@@ -34,7 +34,6 @@ void unionSets(int node1, int node2, int parent[], int rank[]) {
         }
     }
 }
-
 int kruskalMST(int numEdges, int edges[][3]) {
     // Sort edges by weight in ascending order
     qsort(edges, numEdges, sizeof(edges[0]), (int (*)(const void*, const void*))compareEdges);
@@ -56,7 +55,6 @@ int kruskalMST(int numEdges, int edges[][3]) {
             minCost += weight;
         }
     }
-
     return minCost;
 }
 
@@ -77,5 +75,3 @@ int main() {
 
     return 0;
 }
-// Output
-// Total cost of Minimum Spanning Tree : 19
