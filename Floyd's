@@ -1,28 +1,18 @@
 #include <stdio.h>
-
 #define V 5
 #define INF 100000000
-
-// Function to perform Floyd-Warshall algorithm
 void floydWarshall(int dist[V][V]) {
-    // Add all vertices one by one as intermediate vertices
     for (int k = 0; k < V; k++) {
-        // Pick all vertices as source one by one
         for (int i = 0; i < V; i++) {
-            // Pick all vertices as destination for the above picked source
             for (int j = 0; j < V; j++) {
-                // Check if the path through vertex k is shorter
                 if (dist[i][k] != INF && dist[k][j] != INF &&
                     dist[i][j] > dist[i][k] + dist[k][j]) {
-                    
                     dist[i][j] = dist[i][k] + dist[k][j];
                 }
             }
         }
     }
 }
-
-// Function to print the solution matrix
 void printSolution(int dist[V][V]) {
     printf("Shortest distances between every pair of vertices:\n");
     for (int i = 0; i < V; i++) {
@@ -35,7 +25,6 @@ void printSolution(int dist[V][V]) {
         printf("\n");
     }
 }
-
 int main() {
     int dist[V][V] = {
         {0,   4,   INF, 5,   INF},
@@ -44,18 +33,7 @@ int main() {
         {INF, INF, 1,   0,   2},
         {1,   INF, INF, 4,   0}
     };
-
     floydWarshall(dist);
     printSolution(dist);
-
     return 0;
 }
-
-// Output
-/* Shortest distances between every pair of vertices:
-  0   4   5   5   7 
-  3   0   1   4   6 
-  2   6   0   3   5 
-  3   7   1   0   2 
-  1   5   5   4   0  */
-
